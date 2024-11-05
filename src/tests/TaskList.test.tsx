@@ -4,50 +4,78 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import TaskList from '../components/TaskList';
 
-test('it allows the user to create a new task', () => {
-    render(<TaskList />);
+describe('Task Management App', () => {
+    test('allows user to add a new task with category and priority', () => {
+        render(<TaskList />);
 
-    const inputElement = screen.getByPlaceholderText(/add a new task/i);
-    const addButton = screen.getByRole('button', { name: /Add Task/i });
+        const taskInput = screen.getByPlaceholderText(/Task description/i);
+        const categoryInput = screen.getByPlaceholderText(/Category/i);
+        const prioritySelect = screen.getByDisplayValue('Low Priority');
+        const addButton = screen.getByRole('button', { name: /Add Task/i });
 
-    fireEvent.change(inputElement, { target: { value: 'New Task' } });
-    fireEvent.click(addButton);
+        fireEvent.change(taskInput, { target: { value: 'New Task' } });
+        fireEvent.change(categoryInput, { target: { value: 'Work' } });
+        fireEvent.change(prioritySelect, { target: { value: 'High' } });
+        fireEvent.click(addButton);
 
-    expect(screen.getByText(/New Task/i)).toBeInTheDocument();
-});
+        expect(screen.getByText(/New Task/i)).toBeInTheDocument();
+        expect(screen.getByText(/Work/i)).toBeInTheDocument();
+        expect(screen.getByText(/High/i)).toBeInTheDocument();
+    });
 
-test('it allows the user to update an existing task', () => {
-    render(<TaskList />);
+    test('filters tasks by search term', () => {
+        render(<TaskList />);
 
-    const inputElement = screen.getByPlaceholderText(/add a new task/i);
-    const addButton = screen.getByRole('button', { name: /Add Task/i });
+        // Add multiple tasks
+        const taskInput = screen.getByPlaceholderText(/Task description/i);
+        const addButton = screen.getByRole('button', { name: /Add Task/i });
+        
+        fireEvent.change(taskInput, { target: { value: 'First Task' } });
+        fireEvent.click(addButton);
 
-    fireEvent.change(inputElement, { target: { value: 'Old Task' } });
-    fireEvent.click(addButton);
+        fireEvent.change(taskInput, { target: { value: 'Second Task' } });
+        fireEvent.click(addButton);
 
-    const editButton = screen.getByRole('button', { name: /Edit/i });
-    fireEvent.click(editButton);
+        // Search for a specific task
+        const searchInput = screen.getByPlaceholderText(/Search tasks/i);
+        fireEvent.change(searchInput, { target: { value: 'First' } });
 
-    const editInput = screen.getByDisplayValue(/Old Task/i);
-    fireEvent.change(editInput, { target: { value: 'Updated Task' } });
+        expect(screen.getByText(/First Task/i)).toBeInTheDocument();
+        expect(screen.queryByText(/Second Task/i)).not.toBeInTheDocument();
+    });
 
-    const saveButton = screen.getByRole('button', { name: /Save/i });
-    fireEvent.click(saveButton);
+    test('filters tasks by category and priority', () => {
+        render(<TaskList />);
 
-    expect(screen.getByText(/Updated Task/i)).toBeInTheDocument();
-});
+        // Add multiple tasks with different categories and priorities
+        const taskInput = screen.getByPlaceholderText(/Task description/i);
+        const categoryInput = screen.getByPlaceholderText(/Category/i);
+        const prioritySelect = screen.getByDisplayValue('Low Priority');
+        const addButton = screen.getByRole('button', { name: /Add Task/i });
 
-test('it allows the user to delete a task', () => {
-    render(<TaskList />);
+        fireEvent.change(taskInput, { target: { value: 'Task 1' } });
+        fireEvent.change(categoryInput, { target: { value: 'Work' } });
+        fireEvent.change(prioritySelect, { target: { value: 'High' } });
+        fireEvent.click(addButton);
 
-    const inputElement = screen.getByPlaceholderText(/add a new task/i);
-    const addButton = screen.getByRole('button', { name: /Add Task/i });
+        fireEvent.change(taskInput, { target: { value: 'Task 2' } });
+        fireEvent.change(categoryInput, { target: { value: 'Home' } });
+        fireEvent.change(prioritySelect, { target: { value: 'Medium' } });
+        fireEvent.click(addButton);
 
-    fireEvent.change(inputElement, { target: { value: 'Task to be deleted' } });
-    fireEvent.click(addButton);
+        // Filter by category "Work"
+        const categoryFilter = screen.getByPlaceholderText(/Filter by category/i);
+        fireEvent.change(categoryFilter, { target: { value: 'Work' } });
+        
+        expect(screen.getByText(/Task 1/i)).toBeInTheDocument();
+        expect(screen.queryByText(/Task 2/i)).not.toBeInTheDocument();
 
-    const deleteButton = screen.getByRole('button', { name: /Delete/i });
-    fireEvent.click(deleteButton);
-
-    expect(screen.queryByText(/Task to be deleted/i)).not.toBeInTheDocument();
+        // Reset category filter and filter by priority "Medium"
+        fireEvent.change(categoryFilter, { target: { value: '' } });
+        const priorityFilter = screen.getByDisplayValue('All Priorities');
+        fireEvent.change(priorityFilter, { target: { value: 'Medium' } });
+        
+        expect(screen.getByText(/Task 2/i)).toBeInTheDocument();
+        expect(screen.queryByText(/Task 1/i)).not.toBeInTheDocument();
+    });
 });
