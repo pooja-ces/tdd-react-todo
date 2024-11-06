@@ -17,7 +17,6 @@ interface TaskContextProps {
     toggleComplete: (id: number) => void;
 }
 
-// Add type for children as ReactNode
 interface TaskProviderProps {
     children: ReactNode;
 }
