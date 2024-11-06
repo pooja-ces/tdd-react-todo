@@ -10,7 +10,7 @@ const TaskList: React.FC = () => {
     const { tasks, addTask, updateTask, deleteTask, toggleComplete } = useTaskContext();
     const [search, setSearch] = useState('');
     const [categoryFilter, setCategoryFilter] = useState('');
-    const [priorityFilter, setPriorityFilter] = useState<Priority | ''>('');
+    const [priorityFilter, setPriorityFilter] = useState<Priority | ''>(''); // Allow empty string for "no filter"
 
     const filteredTasks = tasks.filter(task => {
         const matchesSearch = task.text.toLowerCase().includes(search.toLowerCase());

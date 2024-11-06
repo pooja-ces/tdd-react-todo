@@ -2,11 +2,12 @@
 import React from 'react';
 import PrioritySelect from './PrioritySelect';
 import { Priority } from '../types/Priority';
-import "../styles/FilterControls.css"
+import '../styles/FilterControls.css';
+
 interface FilterControlsProps {
     search: string;
     categoryFilter: string;
-    priorityFilter: Priority | ''; // Allow empty string as an option
+    priorityFilter: Priority | '';
     onSearchChange: (text: string) => void;
     onCategoryChange: (category: string) => void;
     onPriorityChange: (priority: Priority | '') => void;
@@ -33,6 +34,7 @@ const FilterControls: React.FC<FilterControlsProps> = ({
             value={categoryFilter}
             onChange={(e) => onCategoryChange(e.target.value)}
         />
+        {/* Use PrioritySelect as a controlled component for priority filtering */}
         <PrioritySelect
             value={priorityFilter as Priority}
             onChange={(priority) => onPriorityChange(priority)}
