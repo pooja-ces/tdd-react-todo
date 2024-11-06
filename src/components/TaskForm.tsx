@@ -1,7 +1,8 @@
 // src/components/TaskForm.tsx
 import React, { useState } from 'react';
-import "../styles/TaskForm.css";
-import { Priority } from '../types/Priority'; // Import the Priority enum
+import PrioritySelect from './PrioritySelect';
+import { Priority } from '../types/Priority';
+import '../styles/TaskForm.css';
 
 interface TaskFormProps {
     onSubmit: (text: string, category: string, priority: Priority) => void;
@@ -35,11 +36,8 @@ const TaskForm: React.FC<TaskFormProps> = ({ onSubmit, initialValues }) => {
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
             />
-            <select value={priority} onChange={(e) => setPriority(e.target.value as Priority)}>
-                <option value={Priority.Low}>Low Priority</option>
-                <option value={Priority.Medium}>Medium Priority</option>
-                <option value={Priority.High}>High Priority</option>
-            </select>
+            {/* Use PrioritySelect component */}
+            <PrioritySelect value={priority} onChange={setPriority} />
             <button type="submit">Save Task</button>
         </form>
     );

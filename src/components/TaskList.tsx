@@ -4,14 +4,13 @@ import useTasks from '../hooks/useTasks';
 import TaskForm from './TaskForm';
 import TaskItem from './TaskItem';
 import FilterControls from './FilterControls';
-import "../styles/TaskList.css"
 import { Priority } from '../types/Priority';
-
+import "../styles/TaskList.css"
 const TaskList: React.FC = () => {
     const { tasks, addTask, updateTask, deleteTask, toggleComplete } = useTasks();
     const [search, setSearch] = useState('');
     const [categoryFilter, setCategoryFilter] = useState('');
-    const [priorityFilter, setPriorityFilter] = useState('');
+    const [priorityFilter, setPriorityFilter] = useState<Priority | ''>(''); // Explicitly allow empty string
 
     const filteredTasks = tasks.filter(task => {
         const matchesSearch = task.text.toLowerCase().includes(search.toLowerCase());
