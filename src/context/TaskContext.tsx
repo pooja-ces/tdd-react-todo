@@ -1,13 +1,15 @@
 // src/context/TaskContext.tsx
 import React, { createContext, useContext, useState, ReactNode } from 'react';
+import { Priority } from '../types/Priority';
 
-interface Task {
+export interface Task {
     id: number;
     text: string;
     category: string;
-    priority: 'High' | 'Medium' | 'Low';
+    priority: Priority; // Use the Priority enum here
     completed: boolean;
 }
+
 
 interface TaskContextProps {
     tasks: Task[];

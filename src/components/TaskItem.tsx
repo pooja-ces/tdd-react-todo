@@ -1,12 +1,14 @@
 // src/components/TaskItem.tsx
 import React from 'react';
-import "../styles/TaskItem.css"
+import "../styles/TaskItem.css";
+import { Priority } from '../types/Priority';
+
 interface TaskItemProps {
     task: {
         id: number;
         text: string;
         category: string;
-        priority: 'High' | 'Medium' | 'Low';
+        priority: Priority; // Updated to use the Priority enum
         completed: boolean;
     };
     onEdit: () => void;

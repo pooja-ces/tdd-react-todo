@@ -5,6 +5,7 @@ import TaskForm from './TaskForm';
 import TaskItem from './TaskItem';
 import FilterControls from './FilterControls';
 import "../styles/TaskList.css"
+import { Priority } from '../types/Priority';
 
 const TaskList: React.FC = () => {
     const { tasks, addTask, updateTask, deleteTask, toggleComplete } = useTasks();
@@ -19,7 +20,7 @@ const TaskList: React.FC = () => {
         return matchesSearch && matchesCategory && matchesPriority;
     });
 
-    const handleAddTask = (text: string, category: string, priority: 'High' | 'Medium' | 'Low') => {
+    const handleAddTask = (text: string, category: string, priority: Priority) => {
         addTask({ id: Date.now(), text, category, priority, completed: false });
     };
 
