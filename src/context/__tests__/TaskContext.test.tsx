@@ -1,13 +1,12 @@
-// src/context/__tests__/TaskContext.test.tsx
-import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { TaskProvider, useTaskContext } from '../TaskContext';
+import { Priority } from '../../types/Priority';
 
 const TestComponent = () => {
     const { tasks, addTask, deleteTask } = useTaskContext();
     return (
         <div>
-            <button onClick={() => addTask({ id: 1, text: 'Test Task', category: 'Test', priority: 'Low', completed: false })}>Add Task</button>
+            <button onClick={() => addTask({ id: 1, text: 'Test Task', category: 'Test', priority:Priority.Low, completed: false })}>Add Task</button>
             <button onClick={() => deleteTask(1)}>Delete Task</button>
             {tasks.map((task) => (
                 <div key={task.id}>{task.text}</div>

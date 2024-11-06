@@ -1,10 +1,15 @@
-// src/components/__tests__/TaskItem.test.tsx
-import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import TaskItem from '../TaskItem';
+import { Priority } from '../../types/Priority';
 
 describe('TaskItem Component', () => {
-    const mockTask = { id: 1, text: 'Test Task', category: 'Work', priority: 'High', completed: false };
+    const mockTask = {
+        id: 1,
+        text: 'Test Task',
+        category: 'Work',
+        priority: Priority.High,
+        completed: false
+    };
     const onEdit = jest.fn();
     const onDelete = jest.fn();
     const onToggleComplete = jest.fn();

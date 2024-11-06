@@ -1,28 +1,24 @@
 // src/tests/TaskList.test.tsx
 import { render, screen, fireEvent } from '@testing-library/react';
 import TaskList from '../components/TaskList';
-import { addTask } from './testUtils';
+import {addTaskHelper } from './testUtils';
 import { Priority } from '../types/Priority';
 
 describe('Task Management App', () => {
-    test('allows user to add a new task with category and priority', () => {
-        render(<TaskList />);
-    
-        // Get form elements
-        const taskInput = screen.getByPlaceholderText('Task description');
-        const categoryInput = screen.getByPlaceholderText('Task Category');
-        const prioritySelect = screen.getByDisplayValue('Low Priority');
-        const addButton = screen.getByRole('button', { name: 'Save Task' });
-    
-        // Use the helper to add a new task
-        addTask(taskInput, categoryInput, prioritySelect, addButton, 'Task 2', 'Home', Priority.Medium);
-    
-        // Verify that the task is added with the correct details
-        expect(screen.getByText('Task 2')).toBeInTheDocument();
-        expect(screen.getByText('Home')).toBeInTheDocument();
-        expect(screen.getByText('Priority: Medium')).toBeInTheDocument();
-    });
+    render(<TaskList />);
 
+    const taskInput = screen.getByPlaceholderText('Task description');
+    const categoryInput = screen.getByPlaceholderText('Task Category');
+    const prioritySelect = screen.getByDisplayValue('Low Priority');
+    const addButton = screen.getByRole('button', { name: /Save Task/i });
+
+    // Use addTaskHelper with a cast to Priority
+    addTaskHelper(taskInput, categoryInput, prioritySelect, addButton, 'New Task', 'Home', Priority.Medium);
+
+    // Assertions to verify that the task was added correctly
+    expect(screen.getByText('New Task')).toBeInTheDocument();
+    expect(screen.getByText('Home')).toBeInTheDocument();
+    expect(screen.getByText('Priority: Medium')).toBeInTheDocument();
     test('filters tasks by search term', () => {
         render(<TaskList />);
 
