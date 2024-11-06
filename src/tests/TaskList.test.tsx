@@ -3,26 +3,35 @@ import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import TaskList from '../components/TaskList';
+import { faker } from '@faker-js/faker';
 
 describe('Task Management App', () => {
     test('allows user to add a new task with category and priority', () => {
         render(<TaskList />);
-
-        const taskInput = screen.getByPlaceholderText(/Task description/i);
-        const categoryInput = screen.getByPlaceholderText(/Task Category/i);
+    
+        // Generate random values for the test
+        const randomTaskDescription = faker.lorem.sentence();
+        const randomCategory = faker.commerce.department();
+        const randomPriority = 'High'; // Priority is limited to High, Medium, or Low
+    
+        // Locate form elements
+        const taskInput = screen.getByPlaceholderText('Task description');
+        const categoryInput = screen.getByPlaceholderText('Task Category');
         const prioritySelect = screen.getByDisplayValue('Low Priority');
-        const addButton = screen.getByRole('button', { name: /Add Task/i });
-
-        fireEvent.change(taskInput, { target: { value: 'New Task' } });
-        fireEvent.change(categoryInput, { target: { value: 'Work' } });
-        fireEvent.change(prioritySelect, { target: { value: 'High' } });
+        const addButton = screen.getByRole('button', { name: 'Save Task' });
+    
+        // Fill out and submit the form with random values
+        fireEvent.change(taskInput, { target: { value: randomTaskDescription } });
+        fireEvent.change(categoryInput, { target: { value: randomCategory } });
+        fireEvent.change(prioritySelect, { target: { value: randomPriority } });
         fireEvent.click(addButton);
-
-        // Verify the task text, category, and priority
-        expect(screen.getByText(/New Task/i)).toBeInTheDocument();
-        expect(screen.getByText(/Work/i)).toBeInTheDocument();
-        expect(screen.getByText(/Priority: High/i)).toBeInTheDocument(); // Updated line
+    
+        // Verify the added task with exact matching
+        expect(screen.getByText(randomTaskDescription)).toBeInTheDocument();
+        expect(screen.getByText(randomCategory)).toBeInTheDocument();
+        expect(screen.getByText('Priority: High')).toBeInTheDocument(); // Static priority check
     });
+
     test('filters tasks by search term', () => {
         render(<TaskList />);
 
