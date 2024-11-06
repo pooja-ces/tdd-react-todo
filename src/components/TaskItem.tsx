@@ -2,7 +2,7 @@
 import React from 'react';
 import "../styles/TaskItem.css";
 import { Priority } from '../types/Priority';
-
+import '../styles/TaskItem.css';
 interface TaskItemProps {
     task: {
         id: number;

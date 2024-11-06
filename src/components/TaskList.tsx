@@ -1,16 +1,16 @@
-// src/components/TaskList.tsx
+// Example in TaskList.tsx
 import React, { useState } from 'react';
-import useTasks from '../hooks/useTasks';
+import { useTaskContext } from '../context/TaskContext'; // Import useTaskContext directly
 import TaskForm from './TaskForm';
 import TaskItem from './TaskItem';
 import FilterControls from './FilterControls';
 import { Priority } from '../types/Priority';
-import "../styles/TaskList.css"
+import '../styles/TaskList.css';
 const TaskList: React.FC = () => {
-    const { tasks, addTask, updateTask, deleteTask, toggleComplete } = useTasks();
+    const { tasks, addTask, updateTask, deleteTask, toggleComplete } = useTaskContext();
     const [search, setSearch] = useState('');
     const [categoryFilter, setCategoryFilter] = useState('');
-    const [priorityFilter, setPriorityFilter] = useState<Priority | ''>(''); // Explicitly allow empty string
+    const [priorityFilter, setPriorityFilter] = useState<Priority | ''>('');
 
     const filteredTasks = tasks.filter(task => {
         const matchesSearch = task.text.toLowerCase().includes(search.toLowerCase());
